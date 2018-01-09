@@ -13,5 +13,7 @@ Latest version will be at https://github.com/dssg/triage
 Frozen working version compatabile with existing config files is https://github.com/dssg/triage/releases/tag/v1.0.2
 
 ## Get feature and experiment config files
+sample is in this repo [sample_experiment_config.yaml]
 
 ## Run triage with experiment and feature config files
+sample python file is in this repo [sample_run.py]
