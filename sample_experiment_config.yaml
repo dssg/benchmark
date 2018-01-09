@@ -1,0 +1,61 @@
+config_version: 'v1'
+
+model_comment: 'sample eis config file'
+
+temporal_config:
+    beginning_of_time: '2010-01-04' # earliest date included in features
+    modeling_start_time: '2013-01-02' # earliest date in any model
+    modeling_end_time: '2017-07-02' # all dates in any model are < this date
+    update_window: '1month' # how frequently to retrain models
+
+    train_example_frequency: '1month' # time between rows for same entity in train matrix
+    train_durations: ['1year', '2year', '3year'] # length of time included in a train matrix
+    train_label_windows: ['1year'] # time period across which outcomes are labeled in train matrices
+
+    test_example_frequency: '1day' # time between rows for same entity in test matrix
+    test_durations: ['0day'] # length of time included in a test matrix
+    test_label_windows: ['1year'] # time period across which outcomes are labeled in test matrices
+
+
+
+state_config:
+    table_name: 'triage.states'
+    state_filters:
+      - 'active'
+
+events_table: 'triage.outcomes_active_officers'
+
+feature_group_definition:
+  prefix:
+    - 'eisalerts'
+
+feature_group_strategies: ['all']
+
+user_metadata:
+  label_definition: 'only_eis_alerts'
+
+model_group_keys:
+  - 'train_duration'
+  - 'label_window'
+  - 'example_frequency'
+  - 'label_definition'
+
+
+grid_config:
+    'sklearn.tree.DecisionTreeClassifier':
+        criterion: ['gini']
+        min_samples_split: [2,5,10,null]
+        class_weight: [null,'balanced']
+        max_depth: [1,2,null]
+
+scoring:
+    metric_groups:
+        -
+            metrics: ['precision@', 'recall@']
+            thresholds:
+                percentiles: [1.0, 2.0, 5.0, 10.0, 25.0, 50.0, 75.0, 95.0, 100.0]
+                top_n: [5, 10, 25, 50, 75, 100, 150, 200, 300, 500, 1000, 2000]
+
+individual_importance:
+     methods: ['uniform']
+     n_ranks: 10
