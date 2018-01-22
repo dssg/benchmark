@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+  police_db:
+    build:
+      context: ./police_db
+    image: benchmark/db
+    container_name: police_db
+    env_file: .env
+    volumes:
+      - "../data:/tmp/raw-data"
+    ports:
+      - "5434:5432"
+
+  triage:
+    build:
+      context: ./triage
+    image: benchmark/triage
+    container_name: police_triage
+    #entrypoint: /bin/bash
+    #command: "--help"
+    env_file: .env
+    environment:
+      TRIAGE_DB_URL: 'postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@police_db/police_db'
+    volumes:
+      - "../src:/code"
