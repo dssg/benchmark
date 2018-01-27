@@ -10,7 +10,11 @@ RUN apt-get -y update \
 
 ## DB setup
 ADD activate_postgis.sql /docker-entrypoint-initdb.d/
-ADD create_staging_schema.sql /docker-entrypoint-initdb.d/
 ADD create_extensions.sql /docker-entrypoint-initdb.d/
+ADD create_tables/ /docker-entrypoint-initdb.d/create_tables/
 
-RUN chown postgres:postgres /docker-entrypoint-initdb.d/*.sql
+ADD init.sh /docker-entrypoint-initdb.d/
+
+RUN chown -R postgres:postgres /docker-entrypoint-initdb.d/*.sql
+RUN chmod +x /docker-entrypoint-initdb.d/init.sh
+#RUN chown postgres:postgres /docker-entrypoint-initdb.d/create_tables/*.sql
