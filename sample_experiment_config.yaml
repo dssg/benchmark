@@ -18,6 +18,7 @@ temporal_config:
 
 
 
+
 state_config:
     table_name: 'triage.states'
     state_filters:
@@ -25,9 +26,48 @@ state_config:
 
 events_table: 'triage.outcomes_active_officers'
 
+
+feature_aggregations:
+    -
+        prefix: 'incidents'
+        from_obj: 'staging.incidents'
+        knowledge_date_column: 'report_date'
+
+        aggregates:
+          - # number of events
+            quantity:
+              total: "*"
+
+            imputation:
+              count:
+                type: 'mean'
+
+            metrics: ['count']
+
+        categoricals:
+          - # number of events by type
+            column: 'type'
+            choice_query: 'select distinct intervention_type_code from staging.incidents'
+
+            imputation:
+              sum:
+                type: 'mean'
+              avg:
+                type: 'mean'
+
+            metrics:
+              - 'sum'
+              - 'avg'
+
+        intervals: ['1y']
+
+        groups:
+            - 'entity_id'
+        
+
 feature_group_definition:
   prefix:
-    - 'eisalerts'
+    - 'incidents'
 
 feature_group_strategies: ['all']
 
