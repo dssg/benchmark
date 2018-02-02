@@ -17,4 +17,12 @@ do
 	$RUN_DB -f $dir
 done
 
+cd /docker-entrypoint-initdb.d/
+
+python3 populate_lookup_tables.py --tablefile=lookup_tables.yaml
+
+
+$RUN_DB -f create_and_load_etl_data.script 
+
+
 
