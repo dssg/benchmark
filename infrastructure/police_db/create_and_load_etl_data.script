@@ -107,7 +107,7 @@ WITH settings AS (
       dispatch_category,
       time_on_scene_minutes,
       officer_id,
-      now() - INTERVAL '5 years' + INTERVAL '1 day' * dispatch_final_type_code +
+      now() - INTERVAL '10 years' + INTERVAL 'P3M' * dispatch_final_type_code +
       INTERVAL '1 hour' * time_on_scene_minutes AS event_datetime
 
     FROM filtered_dispatches
