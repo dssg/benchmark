@@ -16,9 +16,6 @@ temporal_config:
     test_durations: ['0day'] # length of time included in a test matrix
     test_label_windows: ['1year'] # time period across which outcomes are labeled in test matrices
 
-
-
-
 state_config:
     table_name: 'triage.states'
     state_filters:
@@ -46,7 +43,7 @@ feature_aggregations:
 
         categoricals:
           - # number of events by type
-            column: 'type'
+            column: 'intervention_type_code'
             choice_query: 'select distinct intervention_type_code from staging.incidents'
 
             imputation:
