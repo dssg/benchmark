@@ -1,15 +1,17 @@
 FROM python:3.6
 
-RUN mkdir /triage
-RUN mkdir /code
+COPY requirements.txt .
 
-## Upgrading all the installed python packages
-RUN pip freeze — local | grep -v ‘^\-e’ | cut -d = -f 1 | xargs -n1 pip install -U
+RUN pip install --no-cache-dir -r requirements.txt
 
-COPY requirements.txt /code
+RUN mkdir triage_experiment
 
-RUN pip install -r /code/requirements.txt
+WORKDIR triage_experiment
 
-COPY run.py /code
+COPY triage_experiment.py /triage_experiment/
+COPY utils.py /triage_experiment/
+COPY setup.py /triage_experiment/
 
-ENTRYPOINT [ "python" , "/code/run.py" ]
+RUN pip install --editable .
+
+ENTRYPOINT [ "triage_experiment" ]

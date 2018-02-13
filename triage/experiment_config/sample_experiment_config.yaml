@@ -1,28 +1,36 @@
-config_version: 'v1'
+config_version: 'v3'
 
 model_comment: 'sample eis config file'
 
+user_metadata:
+  label_definition: 'some_label_definition'
+  experiment_type: 'test'
+  org: 'Benchmark'
+  team: 'Research'
+  author: 'Some Guy'
+
 temporal_config:
-    beginning_of_time: '2010-01-01' # earliest date included in features
-    modeling_start_time: '2010-01-02' # earliest date in any model
-    modeling_end_time: '2017-07-02' # all dates in any model are < this date
-    update_window: '1month' # how frequently to retrain models
+    feature_start_time: '2010-01-01'
+    feature_end_time: '2017-01-01'
+    label_start_time: '2010-01-01'
+    label_end_time: '2017-07-02'
 
-    train_example_frequency: '1month' # time between rows for same entity in train matrix
-    train_durations: ['1year', '2year', '3year'] # length of time included in a train matrix
-    train_label_windows: ['1year'] # time period across which outcomes are labeled in train matrices
+    model_update_frequency: '1month' 
+    training_label_timespans: ['1y']
+    training_as_of_date_frequencies: '15d'
 
-    test_example_frequency: '1day' # time between rows for same entity in test matrix
-    test_durations: ['0day'] # length of time included in a test matrix
-    test_label_windows: ['1year'] # time period across which outcomes are labeled in test matrices
+    test_durations: '0d'
+    test_label_timespans: ['1y'] # 3month, 6month, 1y
+    test_as_of_date_frequencies: '1d'
+
+    max_training_histories: '1y'  # 1y, 2y, 10y
+
+events_table: 'triage.outcomes_active_officers'
 
 state_config:
     table_name: 'triage.states'
     state_filters:
       - 'active'
-
-events_table: 'triage.outcomes_active_officers'
-
 
 feature_aggregations:
     -
@@ -60,7 +68,6 @@ feature_aggregations:
 
         groups:
             - 'entity_id'
-        
 
 feature_group_definition:
   prefix:
@@ -72,16 +79,15 @@ user_metadata:
   label_definition: 'only_eis_alerts'
 
 model_group_keys:
-  - 'train_duration'
-  - 'label_window'
-  - 'example_frequency'
-  - 'label_definition'
-
+    - 'label_definition'
+    - 'label_timespan'
+    - 'state'
+    - 'as_of_date_frequency'
 
 grid_config:
     'sklearn.tree.DecisionTreeClassifier':
         criterion: ['gini']
-        min_samples_split: [2,5,10,null]
+        min_samples_split: [2]
         class_weight: [null,'balanced']
         max_depth: [1,2,null]
 

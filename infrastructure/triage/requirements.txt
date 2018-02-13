@@ -1,5 +1,13 @@
 boto3
-s3fs
+Click
+python-dotenv
+psycopg2
+SQLALchemy
+pandas
+numpy
+seaborn
+scikit-learn
+pgcli
 
 ## DSaPP stuff
-git+https://github.com/dssg/triage.git@fixing_s3
+git+https://github.com/dssg/triage.git@v2.2.0

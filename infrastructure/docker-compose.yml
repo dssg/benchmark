@@ -17,10 +17,8 @@ services:
       context: ./triage
     image: benchmark/triage
     container_name: police_triage
-    #entrypoint: /bin/bash
-    #command: "--help"
     env_file: .env
     environment:
       TRIAGE_DB_URL: 'postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@police_db/police_db'
     volumes:
-      - "../src:/code"
+      - "../triage:/triage"
