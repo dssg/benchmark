@@ -44,7 +44,7 @@ def triage(ctx, config_file, triage_db, replace):
         config=experiment_config,
         db_engine=sqlalchemy.create_engine(triage_db),
         model_storage_class=FSModelStorageEngine,
-        project_path='triage',
+        project_path='/triage/output',
         replace=replace
     )
 
